@@ -1,0 +1,19 @@
+[package]
+name = "solana_multisig_vault"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "solana_multisig_vault"
+crate-type = ["cdylib", "lib"]
+
+[features]
+no-entrypoint = []
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+borsh = "1.5.1"
+serde = "1.0.215"
+solana-program = "=1.18.22"
+
