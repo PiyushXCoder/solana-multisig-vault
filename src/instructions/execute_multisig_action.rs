@@ -44,20 +44,31 @@ pub(crate) fn execute_multisig_action(accounts: &[AccountInfo]) -> ProgramResult
     let multisig_action =
         states::MultiSigAction::try_from_slice(&multisig_action_account_pda.data.borrow())?;
 
+    let mut in_progress_multisig =
+        states::InProcessMultiSig::try_from_slice(&in_progress_multisig_account_pda.data.borrow())?;
+
+    let mut multising_vault =
+        states::MultiSigVault::try_from_slice(&multisig_vault_account_pda.data.borrow())?;
+
+    if !in_progress_multisig
+        .actions
+        .contains(&multisig_action.action_id)
+        || in_progress_multisig.creator != multisig.creator
+        || in_progress_multisig.creator != multising_vault.creator
+    {
+        panic!("Action is not related to given Multisig");
+    }
+
     match multisig_action.action {
         states::Action::UpdateSigners { signers } => {
             multisig.signers = signers;
             helper::update_pda_account(executor, multisig_account_pda, multisig)?;
         }
         states::Action::UpdateNote { note } => {
-            let mut multising_vault =
-                states::MultiSigVault::try_from_slice(&multisig_vault_account_pda.data.borrow())?;
             multising_vault.note = note;
             helper::update_pda_account(executor, multisig_vault_account_pda, multising_vault)?;
         }
         states::Action::UpdateData { data } => {
-            let mut multising_vault =
-                states::MultiSigVault::try_from_slice(&multisig_vault_account_pda.data.borrow())?;
             multising_vault.data = data;
             helper::update_pda_account(executor, multisig_vault_account_pda, multising_vault)?;
         }
@@ -75,9 +86,6 @@ pub(crate) fn execute_multisig_action(accounts: &[AccountInfo]) -> ProgramResult
             **executor.try_borrow_mut_lamports()? += lamports;
         }
     }
-
-    let mut in_progress_multisig =
-        states::InProcessMultiSig::try_from_slice(&in_progress_multisig_account_pda.data.borrow())?;
 
     in_progress_multisig
         .actions

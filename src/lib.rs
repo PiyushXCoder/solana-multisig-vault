@@ -34,6 +34,7 @@ pub mod entrypoint {
                 note,
                 multisig_account_bump,
                 multisig_vault_account_bump,
+                in_progress_multisig_account_bump,
             }) => {
                 instructions::create_card_account(
                     _program_id,
@@ -43,6 +44,7 @@ pub mod entrypoint {
                     note,
                     multisig_account_bump,
                     multisig_vault_account_bump,
+                    in_progress_multisig_account_bump,
                 )?;
             }
             Ok(RequestData::ExecuteMultiSigAction {}) => {
@@ -53,7 +55,6 @@ pub mod entrypoint {
                 action,
                 multisig_action_account_bump,
                 multisig_voting_account_bump,
-                in_progress_multisig_account_bump,
             }) => {
                 instructions::init_multisig_action(
                     _program_id,
@@ -62,7 +63,6 @@ pub mod entrypoint {
                     action,
                     multisig_action_account_bump,
                     multisig_voting_account_bump,
-                    in_progress_multisig_account_bump,
                 )?;
             }
             Ok(RequestData::VoteMultiSigAction { vote }) => {
@@ -85,6 +85,7 @@ pub mod entrypoint {
             note: String,
             multisig_account_bump: u8,
             multisig_vault_account_bump: u8,
+            in_progress_multisig_account_bump: u8,
         },
 
         // executor, multisig_action_account_pda, multisig_voting_account_pda,
@@ -98,7 +99,6 @@ pub mod entrypoint {
             action: states::Action,
             multisig_action_account_bump: u8,
             multisig_voting_account_bump: u8,
-            in_progress_multisig_account_bump: u8,
         },
 
         // voter, multisig_voting_account_pda,multisig_account_pda

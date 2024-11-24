@@ -22,7 +22,8 @@ const requestSchema = {
             minimum_number_of_signs_for_update: 'u32',
             note: 'string',
             multisig_account_bump: 'u8',
-            multisig_vault_account_bump: 'u8'
+            multisig_vault_account_bump: 'u8',
+            in_progress_multisig_account_bump: "u8",
 
           }
         }
@@ -51,7 +52,6 @@ const requestSchema = {
             },
             multisig_action_account_bump: "u8",
             multisig_voting_account_bump: "u8",
-            in_progress_multisig_account_bump: "u8",
           }
         }
       }

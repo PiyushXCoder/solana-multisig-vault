@@ -35,6 +35,13 @@ const [multisig_vault_account_pda, multisig_vault_account_bump] = PublicKey.find
   programId,
 );
 
+const [in_progress_multisig_account_pda, in_progress_multisig_account_bump] = PublicKey.findProgramAddressSync(
+  // Public key of owner of Multisig 
+  [keyPair.publicKey.toBuffer(), "progress"],
+  programId,
+);
+
+
 
 const data = {
   CreateMultiSig: {
@@ -44,7 +51,8 @@ const data = {
     minimum_number_of_signs_for_update: 2,
     note: "123456789",
     multisig_account_bump,
-    multisig_vault_account_bump
+    multisig_vault_account_bump,
+    in_progress_multisig_account_bump,
   }
 };
 
@@ -73,6 +81,11 @@ try {
         },
         {
           pubkey: multisig_vault_account_pda,
+          isSigner: false,
+          isWritable: true,
+        },
+        {
+          pubkey: in_progress_multisig_account_pda,
           isSigner: false,
           isWritable: true,
         },

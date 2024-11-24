@@ -28,6 +28,13 @@ pub(crate) struct MultiSigVault {
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Debug)]
+pub(crate) struct InProcessMultiSig {
+    pub(crate) bump: u8,
+    pub(crate) creator: Pubkey,
+    pub(crate) actions: Vec<String>, // Prefer uuid
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub(crate) enum Action {
     // MultiSig
     UpdateSigners {
@@ -60,10 +67,4 @@ pub(crate) struct MultiSigVoting {
     pub(crate) bump: u8,
     pub(crate) action_id: String, // Use in PDA
     pub(crate) vote_by_signers: HashMap<Pubkey, Option<bool>>,
-}
-
-#[derive(BorshDeserialize, BorshSerialize, Debug)]
-pub(crate) struct InProcessMultiSig {
-    pub(crate) bump: u8,
-    pub(crate) actions: Vec<String>, // Prefer uuid
 }

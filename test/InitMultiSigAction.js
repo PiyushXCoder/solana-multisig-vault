@@ -45,7 +45,7 @@ const [multisig_voting_account_pda, multisig_voting_account_bump] = PublicKey.fi
   programId,
 );
 
-const [in_progress_multisig_account_pda, in_progress_multisig_account_bump] = PublicKey.findProgramAddressSync(
+const [in_progress_multisig_account_pda, _in_progress_multisig_account_bump] = PublicKey.findProgramAddressSync(
   // Public key of owner of Multisig 
   [keyPair.publicKey.toBuffer(), "progress"],
   programId,
@@ -57,7 +57,6 @@ const data = {
     action: { UpdateData: { data: [1, 2, 3, 4, 5] } },
     multisig_action_account_bump: multisig_action_account_bump,
     multisig_voting_account_bump: multisig_voting_account_bump,
-    in_progress_multisig_account_bump: in_progress_multisig_account_bump,
   },
 };
 

@@ -15,7 +15,6 @@ pub(crate) fn init_multisig_action(
     action: states::Action,
     multisig_action_account_bump: u8,
     multisig_voting_account_bump: u8,
-    in_progress_multisig_account_bump: u8,
 ) -> ProgramResult {
     let account_iter = &mut accounts.iter();
     let creator = next_account_info(account_iter)?;
@@ -77,41 +76,18 @@ pub(crate) fn init_multisig_action(
         multisig_voting,
     )?;
 
-    // Update InProgressMultiSig
-    if in_progress_multisig_account_pda
-        .try_data_is_empty()
-        .unwrap_or(true)
-    {
-        let in_progress_multisig = states::InProcessMultiSig {
-            bump: in_progress_multisig_account_bump,
-            actions: vec![action_id],
-        };
-
-        helper::create_pda_account(
-            program_id,
-            &creator,
-            Some(multisig.creator.clone()),
-            &in_progress_multisig_account_pda,
-            in_progress_multisig_account_bump,
-            b"progress",
-            None,
-            in_progress_multisig,
-        )?;
-    } else {
-        let mut in_progress_multisig = states::InProcessMultiSig::try_from_slice(
-            &in_progress_multisig_account_pda.data.borrow(),
-        )?;
-        if in_progress_multisig.actions.contains(&action_id) {
-            panic!("In Progress Exists");
-        }
-        in_progress_multisig.actions.push(action_id);
-
-        helper::update_pda_account(
-            &creator,
-            &in_progress_multisig_account_pda,
-            in_progress_multisig,
-        )?;
+    let mut in_progress_multisig =
+        states::InProcessMultiSig::try_from_slice(&in_progress_multisig_account_pda.data.borrow())?;
+    if in_progress_multisig.actions.contains(&action_id) {
+        panic!("In Progress Exists");
     }
+    in_progress_multisig.actions.push(action_id);
+
+    helper::update_pda_account(
+        &creator,
+        &in_progress_multisig_account_pda,
+        in_progress_multisig,
+    )?;
 
     Ok(())
 }

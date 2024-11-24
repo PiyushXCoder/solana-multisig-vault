@@ -15,11 +15,13 @@ pub(crate) fn create_card_account(
     note: String,
     multisig_account_bump: u8,
     multisig_vault_account_bump: u8,
+    in_progress_multisig_account_bump: u8,
 ) -> ProgramResult {
     let account_iter = &mut accounts.iter();
     let creator = next_account_info(account_iter)?;
     let multisig_account_pda = next_account_info(account_iter)?;
     let multisig_vault_account_pda = next_account_info(account_iter)?;
+    let in_progress_multisig_account_pda = next_account_info(account_iter)?;
 
     // For MultiSig Account
     let mut signers: HashMap<Pubkey, Vec<states::Permission>> = HashMap::new();
@@ -72,5 +74,24 @@ pub(crate) fn create_card_account(
         None,
         multisig_vault,
     )?;
+
+    // In progress
+    let in_progress_multisig = states::InProcessMultiSig {
+        bump: in_progress_multisig_account_bump,
+        creator: creator.key.to_owned(),
+        actions: vec![],
+    };
+
+    helper::create_pda_account(
+        program_id,
+        &creator,
+        None,
+        &in_progress_multisig_account_pda,
+        in_progress_multisig_account_bump,
+        b"progress",
+        None,
+        in_progress_multisig,
+    )?;
+
     Ok(())
 }
