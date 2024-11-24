@@ -63,6 +63,10 @@ pub(crate) fn execute_multisig_action(accounts: &[AccountInfo]) -> ProgramResult
         panic!("Action is not related to given Multisig");
     }
 
+    if multisig_voting.action_id != multisig_action.action_id {
+        panic!("Action and Voting mismatch")
+    }
+
     match multisig_action.action {
         states::Action::UpdateSigners { signers } => {
             multisig.signers = signers;

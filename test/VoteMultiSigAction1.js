@@ -37,6 +37,14 @@ const [multisig_voting_account_pda, _multisig_voting_account_bump] = PublicKey.f
 );
 
 
+const [in_progress_multisig_account_pda, _in_progress_multisig_account_bump] = PublicKey.findProgramAddressSync(
+  // Public key of owner of Multisig 
+  [keyPair.publicKey.toBuffer(), "progress"],
+  programId,
+);
+
+
+
 const data = {
   VoteMultiSigAction: {
     vote: true
@@ -67,14 +75,14 @@ try {
           isWritable: true,
         },
         {
-          pubkey: multisig_account_pda,
+          pubkey: in_progress_multisig_account_pda,
           isSigner: false,
           isWritable: true,
         },
         {
-          pubkey: keyPair2.publicKey,
+          pubkey: multisig_account_pda,
           isSigner: false,
-          isWritable: false,
+          isWritable: true,
         },
 
         {

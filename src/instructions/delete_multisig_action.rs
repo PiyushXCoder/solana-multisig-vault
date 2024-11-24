@@ -33,7 +33,7 @@ pub(crate) fn delete_multisig_action(accounts: &[AccountInfo]) -> ProgramResult 
     }
 
     if multisig_voting.action_id != multisig_action.action_id {
-        panic!("action and voting pda mismatch")
+        panic!("Action and Voting mismatch")
     }
 
     in_progress_multisig
