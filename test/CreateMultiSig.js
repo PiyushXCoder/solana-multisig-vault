@@ -40,7 +40,6 @@ const data = {
   CreateMultiSig: {
     permissions: [
       [{ Initiate: {} }, { Vote: {} }, { Execute: {} },],
-      [{ Initiate: {} }, { Vote: {} }, { Execute: {} },],
     ],
     minimum_number_of_signs_for_update: 2,
     note: "123456789",

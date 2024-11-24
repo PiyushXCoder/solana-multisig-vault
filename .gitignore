@@ -2,3 +2,4 @@
 client/node_modules
 test-ledger
 test/node_modules
+test.json
