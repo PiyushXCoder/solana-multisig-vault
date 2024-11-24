@@ -59,6 +59,7 @@ pub(crate) enum Action {
 pub(crate) struct MultiSigAction {
     pub(crate) bump: u8,
     pub(crate) action_id: String, // Use in PDA
+    pub(crate) creator: Pubkey,
     pub(crate) action: Action,
 }
 

@@ -64,7 +64,15 @@ const requestSchema = {
           }
         }
       }
+    },
+    {
+      struct: {
+        DeleteMultiSigAction: {
+          struct: {}
+        }
+      }
     }
+
   ]
 }
 

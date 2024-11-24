@@ -68,6 +68,10 @@ pub mod entrypoint {
             Ok(RequestData::VoteMultiSigAction { vote }) => {
                 instructions::vote_multisig_action(_accounts, vote)?;
             }
+            Ok(RequestData::DeleteMultiSigAction {}) => {
+                instructions::delete_multisig_action(_accounts)?;
+            }
+
             _ => {
                 panic!("Bad request")
             }
@@ -105,5 +109,9 @@ pub mod entrypoint {
         VoteMultiSigAction {
             vote: bool,
         },
+
+        // creator, multisig_action_account_pda, multisig_voting_account_pda,
+        // in_progress_multisig_account_pda, multisig_account_pda
+        DeleteMultiSigAction {},
     }
 }
