@@ -15,6 +15,10 @@ pub(crate) fn execute_multisig_action(accounts: &[AccountInfo]) -> ProgramResult
     let multisig_vault_account_pda = next_account_info(account_iter)?;
     let in_progress_multisig_account_pda = next_account_info(account_iter)?;
 
+    if !executor.is_signer {
+        panic!("Badly Signed!");
+    }
+
     let mut multisig = states::MultiSig::try_from_slice(&multisig_account_pda.data.borrow())?;
 
     if let Some(perm) = multisig.signers.get(executor.key) {

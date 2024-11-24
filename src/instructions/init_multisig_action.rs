@@ -23,6 +23,10 @@ pub(crate) fn init_multisig_action(
     let in_progress_multisig_account_pda = next_account_info(account_iter)?;
     let multisig_account_pda = next_account_info(account_iter)?;
 
+    if !creator.is_signer {
+        panic!("Badly Signed!");
+    }
+
     let multisig = states::MultiSig::try_from_slice(&multisig_account_pda.data.borrow())?;
 
     if let Some(perm) = multisig.signers.get(creator.key) {
@@ -37,6 +41,7 @@ pub(crate) fn init_multisig_action(
     let multisig_action = states::MultiSigAction {
         bump: multisig_action_account_bump,
         action_id: action_id.clone(),
+        creator: creator.key.to_owned(),
         action,
     };
 

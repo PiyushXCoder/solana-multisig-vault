@@ -23,6 +23,10 @@ pub(crate) fn create_card_account(
     let multisig_vault_account_pda = next_account_info(account_iter)?;
     let in_progress_multisig_account_pda = next_account_info(account_iter)?;
 
+    if !creator.is_signer {
+        panic!("Badly Signed!");
+    }
+
     // For MultiSig Account
     let mut signers: HashMap<Pubkey, Vec<states::Permission>> = HashMap::new();
     signers.insert(

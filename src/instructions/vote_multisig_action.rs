@@ -12,6 +12,10 @@ pub(crate) fn vote_multisig_action(accounts: &[AccountInfo], vote: bool) -> Prog
     let multisig_voting_account_pda = next_account_info(account_iter)?;
     let multisig_account_pda = next_account_info(account_iter)?;
 
+    if !voter.is_signer {
+        panic!("Badly Signed!");
+    }
+
     let multisig = states::MultiSig::try_from_slice(&multisig_account_pda.data.borrow())?;
 
     if let Some(perm) = multisig.signers.get(voter.key) {
